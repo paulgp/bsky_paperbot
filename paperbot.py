@@ -125,7 +125,7 @@ class ArxivBot:
         post_builder = client_utils.TextBuilder().link("arXiv", link).text(post_text)
         self.client.send_post(post_builder, embed=embed)
 
-    def get_arxiv_feed(self, subject: str = "econ.em+stat.me") -> Dict:
+    def get_arxiv_feed(self, subject: str = "econ.GN+econ.TH") -> Dict:
         """Fetch and parse arxiv RSS feed"""
         feed = feedparser.parse(f"https://rss.arxiv.org/rss/{subject}")
         return {
