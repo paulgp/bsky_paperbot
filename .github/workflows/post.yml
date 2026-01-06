@@ -22,10 +22,12 @@ jobs:
           python-version: '3.9'
           cache: 'pip' # caching pip dependencies
       - run: pip install -r requirements.txt
-      - name: Debug secrets length
+      - name: Debug secrets
         run: |
           echo "BSKYBOT length: ${#BSKYBOT}"
           echo "BSKYPWD length: ${#BSKYPWD}"
+          echo "BSKYBOT hash: $(echo -n "$BSKYBOT" | md5sum | cut -c1-8)"
+          echo "BSKYPWD hash: $(echo -n "$BSKYPWD" | md5sum | cut -c1-8)"
         env:
           BSKYBOT: ${{ secrets.BSKYBOT }}
           BSKYPWD: ${{ secrets.BSKYPWD }}
