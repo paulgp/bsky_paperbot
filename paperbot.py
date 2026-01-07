@@ -27,33 +27,22 @@ class ArxivBot:
         # Escape special Typst characters in user data
         def escape_typst(text: str) -> str:
             # Escape backslashes first, then special chars
+            # Note: We don't need to escape [ and ] inside #text[...] content
+            # They only need escaping in code mode
             text = text.replace("\\", "\\\\")
-            text = text.replace("$", "\\$")
             text = text.replace("#", "\\#")
-            text = text.replace("[", "\\[")
-            text = text.replace("]", "\\]")
-            text = text.replace("{", "\\{")
-            text = text.replace("}", "\\}")
             return text
 
+        # Match LaTeX patterns in raw text (before escaping)
         latex_pattern = re.compile(
             r"(\$\$.*?\$\$|(?<!\\)\$(?:[^$\\]|\\.)+?(?<!\\)\$|\\\[.*?\\\]|\\\(.*?\\\)|\\begin\{.*?\}.*?\\end\{.*?\})",
             re.DOTALL,
         )
 
         def format_typst(text: str) -> str:
-            # Wrap LaTeX-like segments in backticks to avoid Typst parsing.
-            parts = []
-            last_end = 0
-            for match in latex_pattern.finditer(text):
-                if match.start() > last_end:
-                    parts.append(escape_typst(text[last_end : match.start()]))
-                latex = match.group(0).replace("`", "``")
-                parts.append(f"`{latex}`")
-                last_end = match.end()
-            if last_end < len(text):
-                parts.append(escape_typst(text[last_end:]))
-            return "".join(parts)
+            # Just escape the text for now - don't try to preserve LaTeX
+            # The backtick approach was causing parsing issues inside #text[...]
+            return escape_typst(text)
 
         # Populate template
         content = template.replace("{{TITLE}}", format_typst(title))
