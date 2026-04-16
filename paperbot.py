@@ -26,22 +26,18 @@ class ArxivBot:
 
         # Escape special Typst characters in user data
         def escape_typst(text: str) -> str:
-            # Escape backslashes first, then special chars
-            # Note: We don't need to escape [ and ] inside #text[...] content
-            # They only need escaping in code mode
+            # Escape backslashes first, then other special chars
             text = text.replace("\\", "\\\\")
             text = text.replace("#", "\\#")
+            text = text.replace("$", "\\$")
+            text = text.replace("*", "\\*")
+            text = text.replace("_", "\\_")
+            text = text.replace("@", "\\@")
+            text = text.replace("<", "\\<")
+            text = text.replace(">", "\\>")
             return text
 
-        # Match LaTeX patterns in raw text (before escaping)
-        latex_pattern = re.compile(
-            r"(\$\$.*?\$\$|(?<!\\)\$(?:[^$\\]|\\.)+?(?<!\\)\$|\\\[.*?\\\]|\\\(.*?\\\)|\\begin\{.*?\}.*?\\end\{.*?\})",
-            re.DOTALL,
-        )
-
         def format_typst(text: str) -> str:
-            # Just escape the text for now - don't try to preserve LaTeX
-            # The backtick approach was causing parsing issues inside #text[...]
             return escape_typst(text)
 
         # Populate template

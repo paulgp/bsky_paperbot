@@ -8,7 +8,7 @@
 
 // Typography settings
 #set text(
-  font: "Linux Libertine",  // Default serif font, cross-platform
+  font: "DejaVu Serif",  // Available on Ubuntu GitHub Actions runners
   size: 11pt,
   fallback: true,
 )
