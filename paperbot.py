@@ -35,6 +35,9 @@ class ArxivBot:
             text = text.replace("@", "\\@")
             text = text.replace("<", "\\<")
             text = text.replace(">", "\\>")
+            text = text.replace("`", "\\`")
+            text = text.replace("[", "\\[")
+            text = text.replace("]", "\\]")
             return text
 
         def format_typst(text: str) -> str:
